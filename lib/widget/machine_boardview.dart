@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:koutei_kanban/api/data_api.dart';
 import 'package:koutei_kanban/model/machine_status.dart';
 
-class MachineBoardView extends StatelessWidget {
+class MachineBoardView extends StatefulWidget {
   const MachineBoardView({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<MachineBoardView> createState() => _MachineBoardViewState();
+}
+
+class _MachineBoardViewState extends State<MachineBoardView> {
   @override
   Widget build(BuildContext context) {
     // A Create Board Header Column With String List
@@ -20,6 +25,9 @@ class MachineBoardView extends StatelessWidget {
     List<BoardItem> boardItems;
     // Color parameter
     Color? boardColor;
+    // status
+    int? status;
+
     return FutureBuilder(
         future: DataApi.loadMachineStatus('ED-12'),
         builder: (context, snapshot) {
@@ -43,6 +51,22 @@ class MachineBoardView extends StatelessWidget {
               for (MachineStatus machstat in machstats) {
                 if (machstat.status == boardColumn) {
                   BoardItem boardItem = BoardItem(
+                    onDropItem: (int? listIndex,
+                        int? itemIndex,
+                        int? oldListIndex,
+                        int? oldItemIndex,
+                        BoardItemState state) {
+                      if (listIndex == 0) {
+                        status = 1;
+                      } else if (listIndex == 1) {
+                        status = 2;
+                      } else if (listIndex == 2) {
+                        status = 4;
+                      }
+                      setState(() {
+                        DataApi.updateMachineStatus(machstat.barcode, status);
+                      });
+                    },
                     item: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Container(

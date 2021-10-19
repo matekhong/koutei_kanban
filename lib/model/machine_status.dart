@@ -6,6 +6,7 @@ List<MachineStatus> decodeMachineStatus(String str) {
 }
 
 class MachineStatus {
+  int? barcode;
   String? jobno;
   String? partno;
   String? jobnm1;
@@ -14,7 +15,8 @@ class MachineStatus {
   String? status;
 
   MachineStatus(
-      {this.jobno,
+      {this.barcode,
+      this.jobno,
       this.partno,
       this.jobnm1,
       this.startdate,
@@ -22,6 +24,7 @@ class MachineStatus {
       this.status});
 
   MachineStatus.fromJson(Map<String, dynamic> json) {
+    barcode = json['barcode'];
     jobno = json['jobno'];
     partno = json['partno'];
     jobnm1 = json['jobnm1'];
@@ -32,6 +35,7 @@ class MachineStatus {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['barocde'] = barcode;
     data['jobno'] = jobno;
     data['partno'] = partno;
     data['jobnm1'] = jobnm1;
